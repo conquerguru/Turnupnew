@@ -16,20 +16,21 @@ namespace TurnupMay20
             IWebDriver driver = new ChromeDriver();
 
             //Creating instance of Login Page
-            Login loginPage = new Login(driver);
+            var loginPage = new Login(driver);
             loginPage.LoginSuccess();
 
             // Creating an instance of home page
-            Home homePage = new Home(driver);
+            var homePage = new Home(driver);
             homePage.clickAdminstration();
             homePage.clickTimenMaterials();
 
 
             TimeMaterial timeMaterial = new TimeMaterial(driver);
-            timeMaterial.clickCreateNew();
-            timeMaterial.createNewRecord();
-            timeMaterial.validateRecord();
-      
+            //timeMaterial.clickCreateNew();
+            //timeMaterial.CreateNewRecord();
+            //timeMaterial.EditNewRecord();
+            timeMaterial.DeleteNewRecord();
+            //timeMaterial.ValidateRecord();      
 
             driver.Quit();
 

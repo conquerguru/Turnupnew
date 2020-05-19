@@ -11,26 +11,32 @@ namespace TurnupMay20
         {
             this.driver = driver; 
         }
+        
+        IWebElement UserName => driver.FindElement(By.Id("UserName"));
+        IWebElement Password => driver.FindElement(By.Name("Password"));
+        IWebElement LoginBtn => driver.FindElement(By.XPath("//input[@type='submit']"));
+
 
         public void LoginSuccess()
-        {
-
-            // open turn up application
+        {            
             driver.Navigate().GoToUrl("http://horse-dev.azurewebsites.net/Account/Login?ReturnUrl=%2f");
 
-
-            //Identify username
-            IWebElement userName = driver.FindElement(By.Id("UserName"));
             // enter hari as username
-            userName.SendKeys("hari");
+            UserName.SendKeys("hari");
+            //identfying password & sending password
+            Password.SendKeys("123123");
+            //clicked login btn
+            LoginBtn.Click();
+        }
+
+        public void LoginFailure()
+        {
+            //Identify username
+            // enter hari as username
+            UserName.SendKeys("hari");
 
             //identfying password & sending password
-            IWebElement password = driver.FindElement(By.Name("Password"));
-            password.SendKeys("123123");
-
-            //clicked login btn
-            IWebElement loginBtn = driver.FindElement(By.XPath("//input[@type='submit']"));
-            loginBtn.Click();
+            Password.SendKeys("123123");
         }
     }
 }

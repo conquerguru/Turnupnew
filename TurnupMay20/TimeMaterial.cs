@@ -20,34 +20,85 @@ namespace TurnupMay20
             createNew.Click();
         }
 
-        internal void createNewRecord()
+        internal void CreateNewRecord()
+        {
+            NewRecord("123");
+
+        }
+
+        internal void EditNewRecord()
+        {
+            Thread.Sleep(1000);
+            driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[2]/td[5]/a[1]")).Click();
+            NewRecord("1234");
+        }
+
+        internal void DeleteNewRecord()
+        {
+            Thread.Sleep(1000);
+            driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[2]/td[5]/a[2]")).Click();
+            IAlert alert = driver.SwitchTo().Alert();
+            alert.Accept();
+            
+        }
+
+        private void NewRecord(string code)
         {
             //Find Code button
             IWebElement Code = driver.FindElement(By.Id("Code"));
-            Code.SendKeys("123");
+            Code.SendKeys(code);
             //Find description button and entering value//
             IWebElement description = driver.FindElement(By.XPath("//input[contains(@id,'Description')]"));
             description.SendKeys("Purple");
             //Finding pricePerUnit and entering value//
+            Thread.Sleep(500);
             IWebElement pricePerUnit = driver.FindElement(By.XPath("//input[contains(@class,'k-formatted-value k-input')]"));
+            Thread.Sleep(500);
+
+            for (var i = 0; i < 10; i++)
+            {
+                Thread.Sleep(500);
+                pricePerUnit.SendKeys(Keys.Backspace);
+            }
             pricePerUnit.SendKeys("3000");
             //finding  save button and then click
             IWebElement saveButton = driver.FindElement(By.XPath("//input[contains(@id,'SaveButton')]"));
             saveButton.Click();
         }
 
-        internal void validateRecord()
+        internal void ValidateRecord()
         {
             // Wait for 1 second
-            Thread.Sleep(1500);
-            IWebElement lastPage = driver.FindElement(By.XPath("//span[contains(.,'Go to the last page')]"));
-            lastPage.Click();
-
-            //
-            for (int i = 1; i <=10; i++)
+            Thread.Sleep(1000);
+            try
             {
-                IWebElement code = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr["+i+"]/td[1]"));
+                while (true)
+                {
+                    // what;t the count
+                    for (var i = 1; i <= 10; i++)
+                    {
+                        var code = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[" + i + "]/td[1]"));
+                        Console.WriteLine(code.Text);
+
+                        var testDescription = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[" + i + "]/td[3]")).Text;
+
+                        // logic to compare the one we wanted
+                        if (code.Text == "192837465" && testDescription == "Test Description")
+                        {
+                            Console.WriteLine("Test Passed");
+                            return;
+                        }
+                    }
+                    //click next page
+                    driver.FindElement(By.XPath("//span[contains(.,'Go to the next page')]")).Click();
+                }
             }
+            catch (Exception)
+            {
+                Console.WriteLine("Test Failed");
+            }
+            
+
         }
     }
 }
